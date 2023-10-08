@@ -95,6 +95,21 @@ def itemMove(matrix,move):
             matrix[nextPos_x][nextPos_y] = "$"
 
 
+def deadPattern(matrix):
+    box = find_character(matrix,'B')
+    goal = find_character(matrix,'.')
+    # box in a corner
+    if matrix[box[0]-1][box[1]] == '#' and matrix[box[0]][box[1]-1] == '#':
+        return True
+    elif matrix[box[0]-1][box[1]] == '#' and matrix[box[0]][box[1]+1] == '#':
+        return True
+    elif matrix[box[0]+1][box[1]] == '#' and matrix[box[0]][box[1]+1] == '#':
+        return True
+    elif matrix[box[0]+1][box[1]] == '#' and matrix[box[0]][box[1]-1] == '#':
+        return True
+    else:
+        return False
+
 def availableGrid(matrix, pos):
     pos_x, pos_y = pos[0], pos[1]
     gridSet = ([pos_x-1,pos_y],[pos_x+1,pos_y],[pos_x,pos_y-1],[pos_x,pos_y+1])
@@ -103,6 +118,7 @@ def availableGrid(matrix, pos):
         if matrix[grid[0]][grid[1]] != '#':
             availableGrid.append((grid[0],grid[1],(pos_x,pos_y))) # to trace what is the previous node
     return availableGrid
+
 
 """
 def locatePrevious(closed_list, item):
@@ -143,11 +159,12 @@ def bfs(matrix):
 matrix = readGame()
 print('$ stands for player, B stands for Box, . stands for goal, # stands for obstacle')
 print('8 for moving up, 2 for moving down, 4 for moving left, 6 for moving right')
-startGrid = (find_character(matrix,'B')[0],find_character(matrix,'B')[1],(None,None))
+#startGrid = (find_character(matrix,'B')[0],find_character(matrix,'B')[1],(None,None))
 #print(availableGrid(matrix,startGrid))
 #print(bfs(matrix))
+deadPattern(matrix)
 
-
+"""
 while True:
     goal = find_character(matrix,'.')
     if goal == None:
@@ -158,3 +175,4 @@ while True:
     itemMove(matrix,move)
     time.sleep(0.5)
     os.system('clear')
+"""
