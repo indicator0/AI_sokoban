@@ -30,13 +30,12 @@ def find_character(matrix, target_char):
     for row_index, row in enumerate(matrix):
         for col_index, char in enumerate(row):
             if char == target_char:
-                return row_index, col_index
+                return (row_index, col_index)
     return None
 
 
 def itemMove(matrix,move):
     player = find_character(matrix, "$")
-    box = find_character(matrix, "B")
 
     if move == '8':
         nextPos_x, nextPos_y = player[0]-1,player[1]
@@ -96,9 +95,59 @@ def itemMove(matrix,move):
             matrix[nextPos_x][nextPos_y] = "$"
 
 
+def availableGrid(matrix, pos):
+    pos_x, pos_y = pos[0], pos[1]
+    gridSet = ([pos_x-1,pos_y],[pos_x+1,pos_y],[pos_x,pos_y-1],[pos_x,pos_y+1])
+    availableGrid = []
+    for grid in gridSet:
+        if matrix[grid[0]][grid[1]] != '#':
+            availableGrid.append((grid[0],grid[1],(pos_x,pos_y))) # to trace what is the previous node
+    return availableGrid
+
+"""
+def locatePrevious(closed_list, item):
+    for grid in closed_list:
+        if item[0] == grid[0] and item[1] == grid[1]:
+            print(grid)
+            return locatePrevious(closed_list,grid[2])
+"""
+
+def bfs(matrix):
+    frontier_list = []
+    closed_list = []
+    frontier_list.append(startGrid)
+    goal = find_character(matrix,'.')
+    notFound = True
+    route = []
+    while notFound:
+        frontier_list2 = []
+        for item in frontier_list:
+            frontier_list2.append((item[0],item[1]))
+        for grid in frontier_list:
+            if goal in frontier_list2:
+                #print(closed_list)
+                closed_list.append(grid)
+                notFound = False
+            elif grid not in closed_list:
+                newgrid = availableGrid(matrix,grid)
+                for item in newgrid:
+                    frontier_list.append((item[0],item[1],item[2]))
+                closed_list.append(grid)
+                frontier_list = frontier_list[1:]
+            else:
+                continue
+    print(route)
+
+
+
 matrix = readGame()
 print('$ stands for player, B stands for Box, . stands for goal, # stands for obstacle')
 print('8 for moving up, 2 for moving down, 4 for moving left, 6 for moving right')
+startGrid = (find_character(matrix,'B')[0],find_character(matrix,'B')[1],(None,None))
+#print(availableGrid(matrix,startGrid))
+#print(bfs(matrix))
+
+
 while True:
     goal = find_character(matrix,'.')
     if goal == None:
