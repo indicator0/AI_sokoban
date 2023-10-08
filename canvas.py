@@ -5,8 +5,13 @@ class Position:
         self.x = pos_x
         self.y = pos_y
 
+    # redefine some operations like +, ==, !=
+
     def __add__(self, pos):
         return Position(self.x + pos.x, self.y + pos.y) 
+    
+    def __sub__(self, pos):
+        return Position(self.x - pos.x, self.y - pos.y) 
     
     def __eq__(self, pos):
         return self.x == pos.x and self.y == pos.y
@@ -33,7 +38,7 @@ class Canvas:
         self.goals = goals
         self.reachable = self._deadpattern_()
 
-
+    # returns available and reachable positions
     def availableGrid(self, boxes, player):
         availableGrid = []
         stack = [player]
