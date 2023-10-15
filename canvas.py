@@ -4,6 +4,9 @@ class Position:
     def __init__(self, pos_x, pos_y):
         self.x = pos_x
         self.y = pos_y
+        self.g = 0
+        self.h = 0
+        self.f = 0
 
     # redefine some operations like +, ==, !=
 
@@ -22,7 +25,7 @@ class Position:
     def __hash__(self):
         return hash((self.x, self.y))
 
-    def __dist__(self, pos):
+    def get_dist(self, pos):
         return abs(self.x - pos.x) + abs(self.y - pos.y)
     
     def __str__(self):

@@ -13,8 +13,10 @@ def load_game(file):
         num_lines = int(f.readline())
 
         for y, line in enumerate(f.readlines()):
+
             if line:
                 for x, char in enumerate(line):
+                    #print(x,y,char)
                     pos = Position(x, y)
 
                     if char in WALL:
