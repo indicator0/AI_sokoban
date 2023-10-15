@@ -2,6 +2,7 @@ from stateset import StateSet
 import numpy as np
 from queue_ori import PriorityQueue
 from queue_fibo import FibonacciHeap
+from scipy.optimize import linear_sum_assignment
 
 def bfs(canvas, boxes, player):
 
@@ -57,42 +58,73 @@ def dfs(canvas, boxes, player):
 
 def aStarSearch(canvas, boxes, player):
 
-    availableGrid, norm_pos, visited = canvas.availableGrid(boxes, player)
-    frontier = FibonacciHeap()
-    score = 0
-    frontier.insert(heuristic(canvas.goals, boxes), [boxes, availableGrid, norm_pos, visited, score])
-    #state_info_cache = StateSet()
-    visitedSet = set()
-    path = []
+    moves, norm_pos, reachable = canvas.availableGrid(boxes, player)
+    #print(moves)
+    openset = FibonacciHeap()
+    openset.add(
+        frozenset(boxes), norm_pos, reachable, moves, 0,
+        heuristic(canvas.goals, boxes))
 
-    while not frontier.isEmpty:
+    closedset = StateSet()
+    camefrom = dict()
 
-        state = frontier.extract_min()
-        score = score + 1
+    while not openset.is_empty:
+        state_info = openset.pop()
+        closedset.update(state_info['boxes'], state_info['norm_pos'],
+                         state_info['reachable'])
 
-        for new_pos, d in state[-1][1]:
-            boxes = set(state[-1][0])
+        tentative_gscore = state_info['gscore'] + 1
+
+        for new_pos, d in state_info['moves']:
+            #print(new_pos)
+            boxes = set(state_info['boxes'])
             boxes.remove(new_pos)
             boxes.add(new_pos + d)
             boxes = frozenset(boxes)
 
-            if (boxes, new_pos) in visitedSet:
+            if (boxes, new_pos) in closedset:
                 continue
             elif canvas.is_finished(boxes):
-                return path + [(new_pos, d)]
+                #print(boxes)
+                return [(boxes, new_pos)] + reconstruct_path(
+                    camefrom, (state_info['boxes'], state_info['norm_pos']))
 
-            if state[-1] not in visitedSet:
-                visitedSet.add(state[-1])
-                availableGrid, norm_pos, visited = canvas.availableGrid(boxes, new_pos)
-                cost = score + heuristic(canvas.goals, boxes)
-                frontier.insert(cost, [boxes, availableGrid, norm_pos, visited, score])
-                
-            elif cost >= frontier.score_((boxes, norm_pos)):
+            norm_pos = openset.look_up((boxes, new_pos))
+
+            if norm_pos is None:
+                moves, norm_pos, reachable = canvas.availableGrid(boxes, new_pos)
+                # print(moves, boxes, new_pos)
+                openset.add(boxes, norm_pos, reachable, moves,
+                            tentative_gscore, heuristic(canvas.goals, boxes))
+            elif tentative_gscore >= openset.get_gscore((boxes, norm_pos)):
                 continue
 
-            path = path + [(new_pos, d)]
+            openset.decreaseKey((boxes, norm_pos), tentative_gscore)
+            camefrom[(boxes, norm_pos)] = (state_info['boxes'],
+                                           state_info['norm_pos'])
             
-def heuristic(posGoals, posBox):
+
+def heuristic(goals, boxes):
+    goals, boxes = list(goals), list(boxes)
+    assert len(goals) == len(boxes)
+
+    dists = np.array([[b.get_dist(g) for g in goals] for b in boxes])
+    row_ind, col_ind = linear_sum_assignment(dists)
+
+    return dists[row_ind, col_ind].sum()
+
+
+def reconstruct_path(cameFrom, current):
+    total_path = [current]
+    print(cameFrom)
+    print(current)
+    print("---")
+    while current in cameFrom:
+        current = cameFrom[current]
+        total_path.append(current)
+    return total_path
+
+def heuristic2(posGoals, posBox):
     distance = 0
     sortposBox = []
     sortposGoals = []
