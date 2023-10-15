@@ -30,6 +30,9 @@ class Position:
     
     def __str__(self):
         return "({},{})".format(self.x, self.y)
+    
+    def __repr__(self):
+        return "({},{})".format(self.x, self.y)
 
 # available directions : up, down, right, left    
 dir_list = [Position(0, -1), Position(0, 1), Position(1, 0), Position(-1, 0)]
