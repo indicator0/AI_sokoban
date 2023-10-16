@@ -1,10 +1,11 @@
 from collections import defaultdict
 
-
+# manage the collection of game state info
 class StateSet:
     def __init__(self):
         self.cache = defaultdict(dict)
 
+    #  check whether a given state(item:(boxes, new_square_location)) is contained within the StateSet
     def __contains__(self, item):
         boxes, player = item
         if boxes in self.cache:
@@ -14,9 +15,11 @@ class StateSet:
                     return True
         return False
 
+    # update the state info cache with new info
     def update(self, boxes, norm_pos, accessible):
         self.cache[boxes][norm_pos] = accessible
 
+    # retrieve a normalized player coordinates associated with a state
     def find(self, item):
         boxes, player = item
         if boxes in self.cache:

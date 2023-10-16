@@ -5,6 +5,8 @@ from .canvas import SquareLocation
 # The function returns the updated box SquareLocations and player SquareLocation
 def manualMove(canvas, player, box, move):
     boxSet = set()
+
+    # move up
     if move == '8':
         nextPos = player + SquareLocation(0, -1)
         if nextPos in canvas.walls:
@@ -26,7 +28,7 @@ def manualMove(canvas, player, box, move):
             boxSet = box
         return boxSet, player
 
-
+    # move down
     if move == '2':
         nextPos = player + SquareLocation(0, 1)
         if nextPos in canvas.walls:
@@ -48,6 +50,7 @@ def manualMove(canvas, player, box, move):
             boxSet = box
         return boxSet, player
     
+    # turn left
     if move == '4':
         nextPos = player + SquareLocation(-1, 0)
         if nextPos in canvas.walls:
@@ -69,6 +72,7 @@ def manualMove(canvas, player, box, move):
             boxSet = box
         return boxSet, player
 
+    # turn right
     if move == '6':
         nextPos = player + SquareLocation(1, 0)
         if nextPos in canvas.walls:
