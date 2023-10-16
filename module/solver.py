@@ -1,6 +1,6 @@
-from stateset import StateSet
+from .stateset import StateSet
 import numpy as np
-from queue_fibo import FibonacciHeap
+from .queue_fibo import FibonacciHeap
 from scipy.optimize import linear_sum_assignment
 
 def bfs(canvas, boxes, player):

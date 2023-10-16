@@ -1,4 +1,4 @@
-from canvas import Position, Canvas
+from module.canvas import Position, Canvas
 
 # read a game map from a file and create a game state "canvas"
 WALL = set(['#'])

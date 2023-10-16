@@ -1,5 +1,5 @@
 from math import log2
-from stateset import StateSet
+from .stateset import StateSet
 
 
 class FibonacciNode:

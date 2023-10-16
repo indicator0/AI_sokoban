@@ -1,4 +1,4 @@
-from canvas import Position
+from .canvas import Position
 
 # takes as input a canvas, player position, box positions, and a move direction
 # It attempts to move the player in the specified direction 
