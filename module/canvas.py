@@ -1,17 +1,17 @@
-# Using relative position. Top left is 0,0
+# Using relative SquareLocation. Top left is 0,0
 
-class Position:
-    # initialize the Position class' attributes
+class SquareLocation:
+    # initialize the SquareLocation class' attributes
     def __init__(self, pos_x, pos_y):
         self.x = pos_x
         self.y = pos_y
 
     # redefine some magic methods for possible use
     def __add__(self, pos):
-        return Position(self.x + pos.x, self.y + pos.y) 
+        return SquareLocation(self.x + pos.x, self.y + pos.y) 
     
     def __sub__(self, pos):
-        return Position(self.x - pos.x, self.y - pos.y) 
+        return SquareLocation(self.x - pos.x, self.y - pos.y) 
     
     def __eq__(self, pos):
         return self.x == pos.x and self.y == pos.y
@@ -32,7 +32,7 @@ class Position:
         return "({},{})".format(self.x, self.y)
 
 #  list of available movements : up, down, right, left    
-dir_list = [Position(0, -1), Position(0, 1), Position(1, 0), Position(-1, 0)]
+dir_list = [SquareLocation(0, -1), SquareLocation(0, 1), SquareLocation(1, 0), SquareLocation(-1, 0)]
 
 class Canvas:
     def __init__(self, num_lines, walls, goals):
@@ -42,7 +42,7 @@ class Canvas:
         self.goals = goals
         self.accessible = self._deadpattern_()
 
-    # returns available and accessible positions
+    # returns available and accessible SquareLocations
     def availableGrid(self, boxes, player):
         availableGrid = []
         stack = [player]

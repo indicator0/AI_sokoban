@@ -1,6 +1,6 @@
-from stateset import StateSet
+from .stateset import StateSet
 import numpy as np
-from queue_fibo import FibonacciHeap
+from .PriorityQueue import FibonacciHeap
 from scipy.optimize import linear_sum_assignment
 
 def bfs(canvas, boxes, player):
@@ -13,8 +13,7 @@ def bfs(canvas, boxes, player):
 
         moves, norm_pos, visited = canvas.availableGrid(boxes, player)
         info_of_state.update(boxes, norm_pos, visited)
-        #print(boxes, norm_pos)
-        #print(info_of_state.cache[boxes][norm_pos])
+
         for new_square, change in moves:
             new_boxes = set(boxes)
             new_boxes.remove(new_square)
