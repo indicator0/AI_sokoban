@@ -40,7 +40,7 @@ class Canvas:
         self.num_lines = num_lines
         self.walls = walls
         self.goals = goals
-        self.accessible = self._deadpattern_()
+        self.accessible = self.goodpattern()
 
     # returns available and accessible SquareLocations
     def availableGrid(self, boxes, player):
@@ -77,7 +77,7 @@ class Canvas:
         # check if the game is finished
         return len(self.goals.difference(boxes)) == 0
 
-    def _deadpattern_(self):
+    def goodpattern(self):
         # identify a pattern of dead ends within a game board. 
         # It uses a simple BFS to explore the squares surrounding goals and marked the accessible square locations
         stack = list(self.goals)
