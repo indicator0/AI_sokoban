@@ -1,6 +1,6 @@
 from canvas import Position, Canvas
 
-
+# read a game map from a file and create a game state "canvas"
 WALL = set(['#'])
 PLAYER = set(['P', '+'])
 GOAL = set(['.', '+', '*'])
@@ -32,3 +32,4 @@ def load_game(file):
 
     canvas = Canvas(num_lines, wall, goal)
     return canvas, box, player
+    # creates a Canvas object and returns it along with the box and player positions
