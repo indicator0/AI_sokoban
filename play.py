@@ -15,7 +15,7 @@ def findAllFile(base):
             yield fullname
 
 # load game level board
-canvas, box, player, best = load_game('./benchmark/case5.txt')
+canvas, box, player, best = load_game('./level/game3.txt')
 
 # choose game mode
 game_mode = input('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:\n')
