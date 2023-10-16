@@ -14,11 +14,12 @@ def findAllFile(base):
             fullname = os.path.join(root, f)
             yield fullname
 
-# load game level board
-canvas, box, player, best = load_game('./level/demo.txt')
+# load game board and best result
+canvas, box, player, best = load_game('./level/hard3.txt')
 
 # choose game mode
-game_mode = input('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:\n')
+print('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:')
+game_mode = input('Please enter: ')
 
 # manual gameplay
 if game_mode == '1':
@@ -144,12 +145,12 @@ if game_mode == '5':
 
     sns.set_style("dark")
     ax_1 = sns.barplot(x=list(dic_push.keys()),y=list(dic_push.values()))
-    ax_1.set_title('Benchmark by Push')
+    ax_1.set_title('Benchmark by Push (Num of times)')
     ax_1.bar_label(ax_1.containers[0])
     plt.savefig("plot_PUSH.png", dpi=300)
     plt.close()
-    ax_2 = sns.barplot(x=list(dic_time.keys()),y=list(dic_time.values()))
-    ax_2.set_title('Benchmark by Time')
+    ax_2 = sns.barplot(x=list(dic_time.keys()),y=list(dic_time.values()), log = True)
+    ax_2.set_title('Benchmark by Time (Seconds)')
     ax_2.bar_label(ax_2.containers[0])
     plt.savefig("plot_TIME.png", dpi=300)
     plt.close()
