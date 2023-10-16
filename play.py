@@ -14,7 +14,7 @@ def findAllFile(base):
             fullname = os.path.join(root, f)
             yield fullname
 
-# load game level board
+# load game board and best result
 canvas, box, player, best = load_game('./level/game3.txt')
 
 # choose game mode
