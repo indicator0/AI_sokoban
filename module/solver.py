@@ -92,7 +92,7 @@ def aStarSearch(canvas, boxes, player):
             elif total_distance_cost >= open_list.get_gscore((boxes, norm_pos)): # we don't update the open list if proposed move is not better than current one
                 continue
             
-            # reorder with a descent order w.r.t f_score.
+            # reorder with an ascent order w.r.t f_score.
             open_list.decreaseKey((boxes, norm_pos), total_distance_cost)
             recorded_path[(boxes, norm_pos)] = (state_info['boxes'], state_info['norm_pos'])
     print('Failed to find a path with A star.')
