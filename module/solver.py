@@ -72,8 +72,6 @@ def aStarSearch(canvas, boxes, player):
         state_info = open_list.pop() # pop the first element in open_list (as a fibonacci heap)
         closed_list.update(state_info['boxes'], state_info['norm_pos'], state_info['accessible']) # update visited status
 
-        total_distance_cost = state_info['gscore'] + 1 # total distance = current gscore + 1 move length
-
         for new_square, change in state_info['moves']:
             # before searching, we protect the real boxes and create an imagined environment to "move" boxes
             new_boxes = set(state_info['boxes'])
@@ -86,7 +84,8 @@ def aStarSearch(canvas, boxes, player):
 
             norm_pos = open_list.find((boxes, new_square)) # look up if this status (with these boxes position and player position) is visited.
             #If so, we should get a norm_pos, then we go to the elif; If not, we get nothing returned, and we add this status into the open_list to discover.
-
+            total_distance_cost = state_info['gscore'] + 1 # total distance = current gscore + 1 move length
+            
             if norm_pos is None:
                 moves, norm_pos, accessible = canvas.availableGrid(boxes, new_square)
                 open_list.add(boxes, norm_pos, accessible, moves, total_distance_cost, heuristic(canvas.goals, boxes))
