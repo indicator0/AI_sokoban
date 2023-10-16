@@ -1,92 +1,92 @@
-from .canvas import Position
+from .canvas import SquareLocation
 
-# takes as input a canvas, player position, box positions, and a move direction
+# takes as input a canvas, player SquareLocation, box SquareLocations, and a move direction
 # It attempts to move the player in the specified direction 
-# The function returns the updated box positions and player position
+# The function returns the updated box SquareLocations and player SquareLocation
 def manualMove(canvas, player, box, move):
     boxSet = set()
     if move == '8':
-        nextPos = player + Position(0, -1)
+        nextPos = player + SquareLocation(0, -1)
         if nextPos in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(0, -1) in canvas.walls:
+        elif nextPos in box and nextPos + SquareLocation(0, -1) in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(0, -1) not in canvas.walls:
-            player = player + Position(0, -1)
+        elif nextPos in box and nextPos + SquareLocation(0, -1) not in canvas.walls:
+            player = player + SquareLocation(0, -1)
             for item in box:
                 if player == item:
-                    item = item + Position(0, -1)
+                    item = item + SquareLocation(0, -1)
                     boxSet.add(item)
                 else:
                     boxSet.add(item)
         else:
-            player = player + Position(0, -1)
+            player = player + SquareLocation(0, -1)
             boxSet = box
         return boxSet, player
 
 
     if move == '2':
-        nextPos = player + Position(0, 1)
+        nextPos = player + SquareLocation(0, 1)
         if nextPos in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(0, 1) in canvas.walls:
+        elif nextPos in box and nextPos + SquareLocation(0, 1) in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(0, 1) not in canvas.walls:
-            player = player + Position(0, 1)
+        elif nextPos in box and nextPos + SquareLocation(0, 1) not in canvas.walls:
+            player = player + SquareLocation(0, 1)
             for item in box:
                 if player == item:
-                    item = item + Position(0, 1)
+                    item = item + SquareLocation(0, 1)
                     boxSet.add(item)
                 else:
                     boxSet.add(item)
         else:
-            player = player + Position(0, 1)
+            player = player + SquareLocation(0, 1)
             boxSet = box
         return boxSet, player
     
     if move == '4':
-        nextPos = player + Position(-1, 0)
+        nextPos = player + SquareLocation(-1, 0)
         if nextPos in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(-1, 0) in canvas.walls:
+        elif nextPos in box and nextPos + SquareLocation(-1, 0) in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(-1, 0) not in canvas.walls:
-            player = player + Position(-1, 0)
+        elif nextPos in box and nextPos + SquareLocation(-1, 0) not in canvas.walls:
+            player = player + SquareLocation(-1, 0)
             for item in box:
                 if player == item:
-                    item = item + Position(-1, 0)
+                    item = item + SquareLocation(-1, 0)
                     boxSet.add(item)
                 else:
                     boxSet.add(item)
         else:
-            player = player + Position(-1, 0)
+            player = player + SquareLocation(-1, 0)
             boxSet = box
         return boxSet, player
 
     if move == '6':
-        nextPos = player + Position(1, 0)
+        nextPos = player + SquareLocation(1, 0)
         if nextPos in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(1, 0) in canvas.walls:
+        elif nextPos in box and nextPos + SquareLocation(1, 0) in canvas.walls:
             print('Invalid Move')
             boxSet = box
-        elif nextPos in box and nextPos + Position(1, 0) not in canvas.walls:
-            player = player + Position(1, 0)
+        elif nextPos in box and nextPos + SquareLocation(1, 0) not in canvas.walls:
+            player = player + SquareLocation(1, 0)
             for item in box:
                 if player == item:
-                    item = item + Position(1, 0)
+                    item = item + SquareLocation(1, 0)
                     boxSet.add(item)
                 else:
                     boxSet.add(item)
         else:
-            player = player + Position(1, 0)
+            player = player + SquareLocation(1, 0)
             boxSet = box
         return boxSet, player
     else:

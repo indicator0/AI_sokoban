@@ -1,13 +1,12 @@
 from load_game import load_game
-from module.canvas import Position, Canvas
 from module.manual import manualMove
 from module.solver import bfs, dfs, aStarSearch
+#from module.canvas import SquareLocation, Canvas
 
 import os
 import time
 import seaborn as sns
 import matplotlib.pyplot as plt
-from module.canvas import Canvas
 
 def findAllFile(base):
     for root, ds, fs in os.walk(base):

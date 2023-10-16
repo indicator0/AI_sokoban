@@ -1,4 +1,4 @@
-from module.canvas import Position, Canvas
+from module.canvas import SquareLocation, Canvas
 
 # read a game map from a file and create a game state "canvas"
 WALL = set(['#'])
@@ -17,7 +17,7 @@ def load_game(file):
             if line:
                 for x, char in enumerate(line):
                     #print(x,y,char)
-                    pos = Position(x, y)
+                    pos = SquareLocation(x, y)
 
                     if char in WALL:
                         wall.add(pos)
