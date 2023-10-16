@@ -25,11 +25,12 @@ def bfs(canvas, boxes, player):
             new_boxes = generateNewBoundary(new_boxes, new_square, change) # generate a new discovering boundary with one box being moved.
 
             if canvas.is_finished(new_boxes):
-                return path + [(new_square, change)] # if game is done, return the path
+            # if game is done, return the path
+                return path + [(new_square, change)] 
             if (new_boxes, new_square) in info_of_state:
                 continue # if a status is visited, for example, moving from (2,2) to (2,2+1) with move (0,1) and boxes are in postion xxx, then we update nothing.
             else:
-                grid_list.append((new_boxes, new_square, path + [(new_square, change)])) # update our list of grids/status to be visited
+                grid_list.append((new_boxes, new_square, path + [(new_square, change)] )) # update our list of grids/status to be visited
 
 def dfs(canvas, boxes, player): # almost the same as bfs, but this time we pop the last element in grid_list to conduct a depth first searching.
     grid_list = [(frozenset(boxes), player, [])]
@@ -41,17 +42,19 @@ def dfs(canvas, boxes, player): # almost the same as bfs, but this time we pop t
 
         moves, norm_pos, accessible = canvas.availableGrid(boxes, player)
         info_of_state.update(boxes, norm_pos, accessible)
-
+        #print(boxes, norm_pos)
+        #print(info_of_state.cache[boxes][norm_pos])
         for new_square, change in moves:
             new_boxes = set(boxes)
             new_boxes = generateNewBoundary(new_boxes, new_square, change)
+            #print(type(new_boxes))
 
             if canvas.is_finished(new_boxes):
-                return path + [(new_square, change)]
+                return path + [(new_square, change)] 
             if (new_boxes, new_square) in info_of_state:
                 continue
             else:
-                grid_list.append((new_boxes, new_square, path + [(new_square, change)]))
+                grid_list.append((new_boxes, new_square, path + [(new_square, change)] ))
 
 def aStarSearch(canvas, boxes, player):
 
@@ -69,8 +72,6 @@ def aStarSearch(canvas, boxes, player):
         state_info = open_list.pop() # pop the first element in open_list (as a fibonacci heap)
         closed_list.update(state_info['boxes'], state_info['norm_pos'], state_info['accessible']) # update visited status
 
-        total_distance_cost = state_info['gscore'] + 1 # total distance = current gscore + 1 move length
-
         for new_square, change in state_info['moves']:
             # before searching, we protect the real boxes and create an imagined environment to "move" boxes
             new_boxes = set(state_info['boxes'])
@@ -83,7 +84,8 @@ def aStarSearch(canvas, boxes, player):
 
             norm_pos = open_list.find((boxes, new_square)) # look up if this status (with these boxes position and player position) is visited.
             #If so, we should get a norm_pos, then we go to the elif; If not, we get nothing returned, and we add this status into the open_list to discover.
-
+            total_distance_cost = state_info['gscore'] + 1 # total distance = current gscore + 1 move length
+            
             if norm_pos is None:
                 moves, norm_pos, accessible = canvas.availableGrid(boxes, new_square)
                 open_list.add(boxes, norm_pos, accessible, moves, total_distance_cost, heuristic(canvas.goals, boxes))
