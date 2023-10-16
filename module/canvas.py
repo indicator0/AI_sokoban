@@ -1,4 +1,4 @@
-# Using relative SquareLocation. Top left is 0,0
+# Using relative location coordinate of board. Top left is (0,0)
 
 class SquareLocation:
     # initialize the SquareLocation class' attributes
@@ -31,7 +31,7 @@ class SquareLocation:
     def __repr__(self):
         return "({},{})".format(self.x, self.y)
 
-#  list of available movements : up, down, right, left    
+#  define the list of available movements : up, down, right, left    
 dir_list = [SquareLocation(0, -1), SquareLocation(0, 1), SquareLocation(1, 0), SquareLocation(-1, 0)]
 
 class Canvas:
@@ -78,6 +78,8 @@ class Canvas:
         return len(self.goals.difference(boxes)) == 0
 
     def _deadpattern_(self):
+        # identify a pattern of dead ends within a game board. 
+        # It uses a simple BFS to explore the squares surrounding goals and marked the accessible square locations
         stack = list(self.goals)
         visited = set()
 
@@ -95,7 +97,7 @@ class Canvas:
 
 
     def plot_canvas(self, boxes, player):
-        # plot the board of gameplay, return a string board
+        # draw the board of gameplay, return a string board
         board_of_squares = []
         for item in range(self.num_lines):
             board_of_squares.append([' '] * 15) # initialize board canvas

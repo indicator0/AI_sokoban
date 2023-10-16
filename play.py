@@ -2,23 +2,25 @@ from load_game import load_game
 from module.manual import manualMove
 from module.solver import bfs, dfs, aStarSearch
 #from module.canvas import SquareLocation, Canvas
-
 import os
 import time
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# read all the test cases in the benchmark folder
 def findAllFile(base):
     for root, ds, fs in os.walk(base):
         for f in fs:
             fullname = os.path.join(root, f)
             yield fullname
 
+# load game level board
+canvas, box, player, best = load_game('./level/game3.txt')
 
-canvas, box, player = load_game('./level/game5.txt')
+# choose game mode
+game_mode = input('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:\n')
 
-game_mode = input('1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark: ')
-
+# manual gameplay
 if game_mode == '1':
     while True:
         canvas.plot_canvas(box, player)
@@ -30,12 +32,15 @@ if game_mode == '1':
         time.sleep(0.5)
         os.system('clear')
 
+# auto gameplay with breath first search algorithm
 if game_mode == '2':
     canvas.plot_canvas(box, player)
     # only records moves that impact boxes, pure player moves are not recorded
     beginTime = time.time()
     path = bfs(canvas, box, player)
     endTime = time.time()
+    #print(type(path))
+    #print(path)
     for pos, d in path:
         box.remove(pos)
         box.add(pos + d)
@@ -46,6 +51,7 @@ if game_mode == '2':
     print("Pushes: ",len(path))
     exit()
 
+# auto gameplay with depth first search algorithm
 if game_mode == '3':
     canvas.plot_canvas(box, player)
     # only records moves that impact boxes, pure player moves are not recorded
@@ -63,6 +69,7 @@ if game_mode == '3':
     print("Pushes: ",len(path))
     exit()
 
+# auto gameplay with a-star(a*) algorithm
 if game_mode == '4':
     canvas.plot_canvas(box, player)
     # only records moves that impact boxes, pure player moves are not recorded
@@ -88,14 +95,19 @@ if game_mode == '4':
     print("Pushes: ",len(path))
     exit()
 
+# Run benchmark performance evaluation with test cases
+# Measured by push and time
 if game_mode == '5':
-    # Benchmark performance with some gameplays
+    
+    print("Running benchmark...")
     base = './benchmark/'
-    push_bfs = push_dfs = push_astar = 0
+    push_bfs = push_dfs = push_astar = push_best = 0
     bfs_time = dfs_time = astar_time = 0
         
     for i in findAllFile(base):
-        canvas, box, player = load_game(i)
+        canvas, box, player, best = load_game(i)
+
+        push_best = push_best + best
 
         beginTime = time.time()
         path_bfs = bfs(canvas, box, player)
@@ -118,15 +130,17 @@ if game_mode == '5':
         usedTime = endTime - beginTime
         astar_time = astar_time + usedTime
     
-    x = ['BFS', 'DFS', 'A*']
-    y_push = [push_bfs, push_dfs, push_astar]
+    x_push = ['BFS', 'DFS', 'A*', 'Best human']
+    x_time = ['BFS', 'DFS', 'A*']
+    y_push = [push_bfs, push_dfs, push_astar, push_best]
     y_time = [bfs_time, dfs_time, astar_time]
-    dic_push = dict(zip(x, y_push))
-    dic_time = dict(zip(x, y_time))
+    dic_push = dict(zip(x_push, y_push))
+    dic_time = dict(zip(x_time, y_time))
     
-    print(f"BFS : Total Pushes: {push_bfs} | Time used: {bfs_time} s\n")
-    print(f"DFS : Total Pushes: {push_dfs} | Time used: {dfs_time} s\n")
-    print(f"A* : Total Pushes: {push_astar} | Time used: {astar_time} s\n")
+    print(f"BFS : Total Pushes: {push_bfs} | Time used: {bfs_time} s")
+    print(f"DFS : Total Pushes: {push_dfs} | Time used: {dfs_time} s")
+    print(f"A* : Total Pushes: {push_astar} | Time used: {astar_time} s")
+    print(f"Best Human Pushes Record: {push_best} ")
 
     sns.set_style("dark")
     ax_1 = sns.barplot(x=list(dic_push.keys()),y=list(dic_push.values()))
