@@ -1,5 +1,8 @@
 from canvas import Position
 
+# takes as input a canvas, player position, box positions, and a move direction
+# It attempts to move the player in the specified direction 
+# The function returns the updated box positions and player position
 def manualMove(canvas, player, box, move):
     boxSet = set()
     if move == '8':

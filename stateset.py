@@ -14,10 +14,10 @@ class StateSet:
                     return True
         return False
 
-    def update(self, boxes, norm_pos, reachable):
-        self.cache[boxes][norm_pos] = reachable
+    def update(self, boxes, norm_pos, accessible):
+        self.cache[boxes][norm_pos] = accessible
 
-    def look_up(self, item):
+    def find(self, item):
         boxes, player = item
         if boxes in self.cache:
             state_info = self.cache[boxes]

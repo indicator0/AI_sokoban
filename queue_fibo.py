@@ -47,8 +47,8 @@ class FibonacciHeap:
     def is_empty(self):
         return self.num_key == 0
 
-    def look_up(self, item):
-        return self.state_set.look_up(item)
+    def find(self, item):
+        return self.state_set.find(item)
 
     def get_gscore(self, key):
         return self.cache[key].value['gscore']
@@ -74,18 +74,18 @@ class FibonacciHeap:
             if self.min_node > h2.min_node:
                 self.min_node = h2.min_node
 
-    def add(self, boxes, norm_pos, reachable, moves, gscore, fscore):
+    def add(self, boxes, norm_pos, accessible, moves, gscore, fscore):
         # print(f'Add {(boxes, norm_pos)}')
         value = {
             'boxes': boxes,
             'norm_pos': norm_pos,
-            'reachable': reachable,
+            'accessible': accessible,
             'moves': moves,
             'gscore': gscore,
             'fscore': fscore
         }
 
-        self.state_set.update(boxes, norm_pos, reachable)
+        self.state_set.update(boxes, norm_pos, accessible)
 
         node = FibonacciNode(value)
         self.cache[node._key] = node

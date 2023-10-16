@@ -1,15 +1,12 @@
 # Using relative position. Top left is 0,0
 
 class Position:
+    # initialize the Position class' attributes
     def __init__(self, pos_x, pos_y):
         self.x = pos_x
         self.y = pos_y
-        self.g = 0
-        self.h = 0
-        self.f = 0
 
-    # redefine some operations like +, ==, !=
-
+    # redefine some magic methods for possible use
     def __add__(self, pos):
         return Position(self.x + pos.x, self.y + pos.y) 
     
@@ -34,17 +31,18 @@ class Position:
     def __repr__(self):
         return "({},{})".format(self.x, self.y)
 
-# available directions : up, down, right, left    
+#  list of available movements : up, down, right, left    
 dir_list = [Position(0, -1), Position(0, 1), Position(1, 0), Position(-1, 0)]
 
 class Canvas:
     def __init__(self, num_lines, walls, goals):
+        # initialize the Canvas class' attributes
         self.num_lines = num_lines
         self.walls = walls
         self.goals = goals
-        self.reachable = self._deadpattern_()
+        self.accessible = self._deadpattern_()
 
-    # returns available and reachable positions
+    # returns available and accessible positions
     def availableGrid(self, boxes, player):
         availableGrid = []
         stack = [player]
@@ -68,7 +66,7 @@ class Canvas:
                     continue
                 elif new_pos in boxes:
                     new_box_pos = new_pos + d # push box
-                    if new_box_pos not in self.walls.union(boxes) and new_box_pos in self.reachable:
+                    if new_box_pos not in self.walls.union(boxes) and new_box_pos in self.accessible:
                         availableGrid.append((new_pos, d))
                 else:
                     stack.append(new_pos)
@@ -76,6 +74,7 @@ class Canvas:
         return availableGrid, norm_pos, visited
 
     def is_finished(self, boxes):
+        # check if the game is finished
         return len(self.goals.difference(boxes)) == 0
 
     def _deadpattern_(self):
@@ -96,24 +95,25 @@ class Canvas:
 
 
     def plot_canvas(self, boxes, player):
-        str_board = []
+        # plot the board of gameplay, return a string board
+        board_of_squares = []
         for item in range(self.num_lines):
-            str_board.append([' '] * 15)
+            board_of_squares.append([' '] * 15) # initialize board canvas
 
-        for wall in self.walls:  # wall
-            str_board[wall.y][wall.x] = '#'
+        for wall in self.walls:  
+            board_of_squares[wall.y][wall.x] = '#' # walls
 
-        for box in boxes.difference(self.goals):  # box not at goal
-            str_board[box.y][box.x] = 'B'
+        for box in boxes.difference(self.goals):  # boxes not on goal square
+            board_of_squares[box.y][box.x] = 'B'
 
-        for box in self.goals.intersection(boxes):  # box at goal
-            str_board[box.y][box.x] = '*'
+        for box in self.goals.intersection(boxes):  # boxes on goal square
+            board_of_squares[box.y][box.x] = '*'
 
-        for goal in self.goals.difference(boxes):  # goal without box
-            str_board[goal.y][goal.x] = '.'
+        for goal in self.goals.difference(boxes):  # goal square without boxes on it
+            board_of_squares[goal.y][goal.x] = '.'
 
-        if player in self.goals:  # player at goal
-            str_board[player.y][player.x] = '+'
-        else:  # player not at goal
-            str_board[player.y][player.x] = 'P'
-        print('\n'.join([''.join(line) for line in str_board]))
+        if player in self.goals:  
+            board_of_squares[player.y][player.x] = '+' # player on goal square
+        else:  
+            board_of_squares[player.y][player.x] = 'P' # player not on goal square
+        print('\n'.join([''.join(line) for line in board_of_squares]))
