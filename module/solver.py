@@ -25,13 +25,12 @@ def bfs(canvas, boxes, player):
             new_boxes = generateNewBoundary(new_boxes, new_square, change) # generate a new discovering boundary with one box being moved.
 
             if canvas.is_finished(new_boxes):
-                path += [(new_square, change)] # if game is done, return the path
-                return path
+            # if game is done, return the path
+                return path + [(new_square, change)] 
             if (new_boxes, new_square) in info_of_state:
                 continue # if a status is visited, for example, moving from (2,2) to (2,2+1) with move (0,1) and boxes are in postion xxx, then we update nothing.
             else:
-                path += [(new_square, change)]
-                grid_list.append((new_boxes, new_square, path)) # update our list of grids/status to be visited
+                grid_list.append((new_boxes, new_square, path + [(new_square, change)] )) # update our list of grids/status to be visited
 
 def dfs(canvas, boxes, player): # almost the same as bfs, but this time we pop the last element in grid_list to conduct a depth first searching.
     grid_list = [(frozenset(boxes), player, [])]
@@ -51,13 +50,11 @@ def dfs(canvas, boxes, player): # almost the same as bfs, but this time we pop t
             #print(type(new_boxes))
 
             if canvas.is_finished(new_boxes):
-                path += [(new_square, change)]
-                return path
+                return path + [(new_square, change)] 
             if (new_boxes, new_square) in info_of_state:
                 continue
             else:
-                path += [(new_square, change)]
-                grid_list.append((new_boxes, new_square, path))
+                grid_list.append((new_boxes, new_square, path + [(new_square, change)] ))
 
 def aStarSearch(canvas, boxes, player):
 
