@@ -19,7 +19,7 @@ class StateSet:
     def update(self, boxes, norm_pos, accessible):
         self.cache[boxes][norm_pos] = accessible
 
-    # retrieve a normalized player coordinates associated with a state
+    # retrieve normalized player coordinates associated with a state
     def find(self, item):
         boxes, player = item
         if boxes in self.cache:
