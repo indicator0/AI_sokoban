@@ -15,7 +15,7 @@ def findAllFile(base):
             yield fullname
 
 # load game board and best result
-canvas, box, player, best = load_game('./level/hard3.txt')
+canvas, box, player, best = load_game('./level/game2.txt')
 
 # choose game mode
 print('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:')
@@ -93,7 +93,7 @@ if game_mode == '4':
         
     endTime = time.time()
     print("Time used: ", endTime - beginTime)
-    print("Pushes: ",len(path))
+    print("Pushes: ",len(path)-1)
     exit()
 
 # Run benchmark performance evaluation with test cases
