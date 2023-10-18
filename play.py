@@ -15,7 +15,7 @@ def findAllFile(base):
             yield fullname
 
 # load game board and best result
-canvas, box, player, best = load_game('./level/game2.txt')
+canvas, box, player, best = load_game('./level/game3.txt')
 
 # choose game mode
 print('Enter 1 for manual, 2 for bfs, 3 for dfs, 4 for astar, 5 for benchmark:')
@@ -131,6 +131,7 @@ if game_mode == '5':
         usedTime = endTime - beginTime
         astar_time = astar_time + usedTime
     
+    push_astar = push_astar - 1
     x_push = ['BFS', 'DFS', 'A*', 'Best human']
     x_time = ['BFS', 'DFS', 'A*']
     y_push = [push_bfs, push_dfs, push_astar, push_best]
